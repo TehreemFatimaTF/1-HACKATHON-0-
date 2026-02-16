@@ -1,0 +1,6 @@
+[2026-02-14 15:11:27] [GMAIL] [SYSTEM] === Gmail Watcher Starting ===
+[2026-02-14 15:11:27] [GMAIL] [INFO] Check interval: 300 seconds (5 minutes)
+[2026-02-14 15:11:27] [GMAIL] [INFO] Output to: C:\Users\HP 15\OneDrive\Documents\HACKATHON-0-PERSONAL-AI-EMPLOYEE\SILVER-TIER\Ai_Employee_vault\src\Inbox
+[2026-02-14 15:11:27] [GMAIL] [ERROR] credentials.json not found. Please set up Gmail API credentials.
+[2026-02-14 15:11:27] [GMAIL] [ERROR] See GMAIL_MCP_SETUP.md for instructions
+[2026-02-14 15:11:27] [GMAIL] [ERROR] Failed to authenticate with Gmail API

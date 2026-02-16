@@ -16,8 +16,21 @@
               "icon": "lucide-git-fork",
               "title": "Graph view"
             }
+          },
+          {
+            "id": "a9db0ad580b7c9e3",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.11.7"
+              },
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.11.7"
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -176,42 +189,43 @@
       "bases:Create new base": false
     }
   },
-  "active": "63a971a047eba0e3",
+  "active": "a9db0ad580b7c9e3",
   "lastOpenFiles": [
+    "Needs_Action/task_2026-02-14_161113_LinkedIn_2026-02-14_161111_AI Automation Trends 2026.md",
+    "Inbox/LinkedIn_2026-02-14_161111_AI Automation Trends 2026.md",
+    "Needs_Action/task_2026-02-14_160602_LinkedIn_2026-02-14_160602_AI Automation Trends 2026.md",
+    "Inbox/LinkedIn_2026-02-14_160602_AI Automation Trends 2026.md",
+    "Needs_Action/task_2026-02-14_155649_LinkedIn_2026-02-14_155649_AI Automation Trends 2026.md",
+    "Inbox/LinkedIn_2026-02-14_155649_AI Automation Trends 2026.md",
+    "HACKATHON_CHECKLIST.md",
+    "GMAIL_OAUTH_FIX.md",
+    "QUICK_REFERENCE.md",
+    "Needs_Action/task_2026-02-14_153215_LinkedIn_2026-02-14_153214_AI Automation Trends 2026.md",
+    "DEMO_SCRIPT.md",
+    "demo_start.bat",
+    "Needs_Action/task_2026-02-14_153000_LinkedIn_2026-02-14_152959_AI Automation Trends 2026.md",
+    "Inbox/LinkedIn_2026-02-14_152959_AI Automation Trends 2026.md",
+    "SILVER_TIER_VERIFICATION_REPORT.md",
+    "Needs_Action/task_2026-02-14_152151_LinkedIn_2026-02-14_152150_AI Automation Trends 2026.md",
+    "Inbox/test_email_manual.md",
+    "Needs_Action/task_2026-02-14_151231_LinkedIn_2026-02-14_151230_AI Automation Trends 2026.md",
+    "Inbox/LinkedIn_2026-02-14_151230_AI Automation Trends 2026.md",
+    "src/Logs/watcher_gmail.log",
+    "src/Logs",
+    "src/Inbox",
+    "credentials.json",
+    "GMAIL_MCP_SETUP.md",
+    "Needs_Action/task_2026-02-14_145758_LinkedIn_2026-02-14_145758_AI Automation Trends 2026.md",
+    "Inbox/LinkedIn_2026-02-14_145758_AI Automation Trends 2026.md",
+    "Logs/watcher_linkedin.log",
+    "Logs/watcher_gmail.log",
+    "Logs/watcher_local.log",
+    "Logs/watcher_main.log",
+    "Inbox/demo.md",
+    "src/__pycache__/watcher_linkedin.cpython-312.pyc",
     "Dashboard.md",
     "Company_Handbook.md",
     "plan_crm_update_2026-01-19.md",
-    "Done/plan_urgent_invoice_followup_2026-01-19.md",
-    "Done/urgent_invoice_followup.md",
-    "Plans/plan_urgent_invoice_followup_2026-01-19.md",
-    "Plans/plan_task_2026-01-19_152950_test_invoice_2026-01-19.md",
-    "Plans/plan_linkedin-post_2026-01-19.md",
-    "Plans/plan_partnership_email_2026-01-19.md",
-    "Plans/plan_team_standup_schedule_2026-01-19.md",
-    "Plans/plan_task_2026-01-19_153006_test_invoice_2026-01-19.md",
-    "Plans/plan_security_audit_critical_2026-01-19.md",
-    "Plans/plan_quarterly_report_2026-01-19.md",
-    "README.md",
-    "Needs_Action/task_2026-01-19 153006_test_invoice.txt.md",
-    "Inbox/test_invoice.txt",
-    "Needs_Action/task_2026-01-19 152950_test_invoice.txt.md",
-    "Needs_Action/linkedin-post.md",
-    "Needs_Action/crm_update.md",
-    "Needs_Action/team_standup_schedule.md",
-    "Needs_Action/security_audit_critical.md",
-    "Needs_Action/partnership_email.md",
-    "Needs_Action/quarterly_report.md",
-    "Needs_Action/urgent_invoice_followup.md",
-    "create a link.md",
-    "pyproject.toml",
-    "main.py",
-    "src/watcher.py",
-    "src",
-    "Logs",
-    "Done",
-    "Plans",
-    "Needs_Action",
-    "Inbox",
-    "Welcome.md"
+    "Done/plan_urgent_invoice_followup_2026-01-19.md"
   ]
 }

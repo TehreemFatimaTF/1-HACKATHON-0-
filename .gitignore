@@ -7,4 +7,57 @@ wheels/
 *.egg-info
 
 # Virtual environments
-.venv
+# Sensitive credentials
+gmail_credentials.json
+credentials.json
+token.pickle
+.env
+*.key
+*.pem
+credentials/
+
+# MCP configuration (may contain tokens)
+.claude/mcp_tokens/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# Logs (keep structure but ignore content)
+Logs/*.log
+Logs/watcher.log
+Logs/executions.log
+Logs/approvals.log
+
+# Temporary files
+*.tmp
+*.temp
+~*
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Obsidian
+.obsidian/workspace
+.obsidian/workspace.json
+
+# Test files
+test_*.txt
+demo_*.md
+
+# Backup files
+*.bak
+*.backup
+mcp.json

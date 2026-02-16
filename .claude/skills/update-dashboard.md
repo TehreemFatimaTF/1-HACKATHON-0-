@@ -10,16 +10,39 @@ When this skill is invoked, follow these steps:
 ### 1. Collect Comprehensive Statistics
 Count files and analyze metadata in the following folders:
 - `Needs_Action/` - Total pending tasks
-- `Plans/` - Active execution plans
+- `Plans/` - Pending approvals (awaiting human review)
+- `4_Approved/` - Approved plans ready for execution
 - `Done/` - Completed tasks
 - `Inbox/` - Incoming items (if exists)
 - `Logs/` - System logs (if exists)
+- `Logs/external_actions.json` - External actions tracker
 
 Use bash commands:
 ```bash
 ls -1 Needs_Action/ 2>/dev/null | wc -l
 ls -1 Plans/ 2>/dev/null | wc -l
+ls -1 4_Approved/ 2>/dev/null | wc -l
 ls -1 Done/ 2>/dev/null | wc -l
+```
+
+Read external actions data:
+```bash
+cat Logs/external_actions.json 2>/dev/null
+```
+
+If file doesn't exist, create it with default structure:
+```json
+{
+  "emails_sent": [],
+  "linkedin_posts": [],
+  "reports_generated": [],
+  "meetings_scheduled": [],
+  "total_emails": 0,
+  "total_posts": 0,
+  "total_reports": 0,
+  "total_meetings": 0,
+  "last_updated": "Never"
+}
 ```
 
 ### 2. Analyze Task Priority & Metadata
@@ -32,7 +55,8 @@ For each file in `Needs_Action/`:
 
 ### 3. Bottleneck Detection
 - If `Needs_Action/` has >= 5 files: **ALERT MODE**
-- If `Plans/` has >= 10 files: **PLANNING OVERLOAD**
+- If `Plans/` has >= 5 files: **APPROVAL BACKLOG** (Human review needed)
+- If `4_Approved/` has >= 10 files: **EXECUTION BACKLOG** (Approved but not executed)
 - If ratio of Needs_Action to Done is > 2:1: **EXECUTION GAP**
 
 ### 4. Business Goals Analysis
@@ -58,7 +82,8 @@ Create or completely overwrite `Dashboard.md` with this enhanced structure:
 | Metric | Current | Status |
 |--------|---------|--------|
 | 📥 Tasks Pending | [count] | [🟢/🟡/🔴] |
-| 📋 Active Plans | [count] | [🟢/🟡/🔴] |
+| ⏳ Pending Approvals | [count] | [🟢/🟡/🔴] |
+| ✅ Approved Plans | [count] | [🟢/🟡/🔴] |
 | ✅ Completed Today | [count] | [🟢/🟡/🔴] |
 | ⚡ Avg. Processing Time | [X] min | [trend ↗️/↘️/→] |
 | 🎯 Completion Rate | [X]% | [trend] |
@@ -102,9 +127,15 @@ Create or completely overwrite `Dashboard.md` with this enhanced structure:
 > You have **[count]** pending tasks. Consider prioritizing or delegating.
 > **Recommended Action:** Process top 3 urgent items immediately.
 
-[If Plans >= 10:]
-> [!warning] Planning Overload Detected
-> **[count]** active plans may indicate over-planning. Focus on execution.
+[If Plans >= 5:]
+> [!warning] 👤 Human Review Required
+> **[count]** plans are awaiting your approval in `Plans/` folder.
+> **Recommended Action:** Review and approve/reject pending plans using `/request-approval`
+
+[If 4_Approved >= 10:]
+> [!warning] Execution Backlog Detected
+> **[count]** approved plans are ready but not yet executed.
+> **Recommended Action:** Execute approved plans using `/complete-task`
 
 [If no alerts:]
 > [!success] ✅ All Systems Operating Smoothly
@@ -152,6 +183,44 @@ Fri [Today]
 
 ---
 
+## 🌐 External Actions Log
+
+> [!info] Real-World Impact Tracker
+> This section tracks actions taken outside the system (emails, posts, etc.)
+
+### Today's External Actions
+
+| Action Type | Count | Last Action | Status |
+|-------------|-------|-------------|--------|
+| 📧 Emails Sent | [count] | [timestamp] | [🟢/🟡/🔴] |
+| 📱 LinkedIn Posts | [count] | [timestamp] | [🟢/🟡/🔴] |
+| 📊 Reports Generated | [count] | [timestamp] | [🟢/🟡/🔴] |
+| 📅 Meetings Scheduled | [count] | [timestamp] | [🟢/🟡/🔴] |
+
+### Recent External Actions
+
+**Last 5 Actions:**
+
+[Read from Logs/external_actions.json and list recent actions]
+1. 📧 Email to [recipient] - "[subject]" - [timestamp]
+2. 📱 LinkedIn post - "[preview]" - [timestamp]
+3. 📊 Report generated - "[title]" - [timestamp]
+...
+
+[If no external actions:]
+> [!note] No External Actions Yet
+> No emails sent or posts made today. Execute approved plans to see activity here.
+
+### External Actions Summary
+
+**Total Impact:**
+- **Emails Sent (All Time):** [total_count]
+- **LinkedIn Posts (All Time):** [total_count]
+- **Success Rate:** [percentage]%
+- **Last Action:** [timestamp]
+
+---
+
 ## 🔧 System Status
 
 > [!check] System Health
@@ -190,7 +259,9 @@ Fri [Today]
 - Use emojis strategically for visual hierarchy
 - Create progress bars using text: `[=====>    ]`
 - Use tables for structured data
-- Color code status: 🟢 (0-3 tasks), 🟡 (4-7 tasks), 🔴 (8+ tasks)
+- Color code status:
+  - 🟢 (0-3 items), 🟡 (4-7 items), 🔴 (8+ items) for tasks
+  - 🟢 (0-2 items), 🟡 (3-4 items), 🔴 (5+ items) for pending approvals
 - Keep sections collapsible-friendly in Obsidian
 
 ### 7. Intelligence Layer
@@ -208,9 +279,15 @@ After updating, provide executive summary:
 📊 Executive Summary:
 - Status: [🟢/🟡/🔴]
 - Pending: [X] tasks (~[Y] hours)
+- Pending Approvals: [X] plans
 - Completed: [X] tasks
 - Alerts: [count] active alerts
 - Business Value: [X] tasks delivered
+
+🌐 External Actions Today:
+- Emails Sent: [count]
+- LinkedIn Posts: [count]
+- Total Impact: [count] external actions
 
 💡 Top Recommendation: [Most important action]
 

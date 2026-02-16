@@ -1,0 +1,157 @@
+🔄 Complete Workflow - Inbox se Done tak
+
+  Step 1: Inbox → Needs_Action (Automatic)
+
+  Kaise hota hai:
+  - Watcher system automatically monitor karta hai Inbox/ folder
+  - Jab bhi koi naya file aata hai (email, LinkedIn post, ya manual file), watcher usko detect karta hai
+  - Watcher automatically file ko Needs_Action/ folder mein move kar deta hai
+  - Metadata add kar deta hai (timestamp, source, status)
+
+  Example:
+  Inbox/test_email.txt → Needs_Action/task_2026-02-16_test_email.md
+
+  ---
+  Step 2: Needs_Action → Plans (Manual - Aap invoke karte hain)
+
+  Kaise karna hai:
+  claude skill process-needs-action
+
+  Kya hota hai:
+  - Ye skill Needs_Action/ folder mein sab files read karti hai
+  - Har task ke liye detailed execution plan banati hai
+  - Plans ko Plans/ folder mein save karti hai
+  - Dashboard update karti hai
+
+  Example:
+  Needs_Action/security_audit_critical.md
+  → Plans/plan_security_audit_critical_2026-02-16.md
+
+  Abhi maine ye step complete kar diya hai - 7 plans create ho gaye hain Plans folder mein.
+
+  ---
+  Step 3: Plans → 4_Approved (Manual - Human Approval)
+
+  Kaise karna hai:
+
+  Option A: Specific plan approve karna:
+  claude skill request-approval Approve plan_security_audit_critical_2026-02-16
+
+  Option B: Interactive (list dekh kar select karna):
+  claude skill request-approval Approve
+
+  Kya hota hai:
+  1. Aap plan ko review karte hain Plans/ folder mein
+  2. Agar plan theek hai, to approve karte hain
+  3. Skill automatically plan ko Plans/ se 4_Approved/ mein move kar deti hai
+  4. Approval metadata add ho jata hai (timestamp, approved by, etc.)
+  5. Dashboard update ho jata hai
+
+  Example:
+  Plans/plan_security_audit_critical_2026-02-16.md
+  → 4_Approved/plan_security_audit_critical_2026-02-16.md
+
+  ---
+  Step 4: 4_Approved → Done (Manual - Execution)
+
+  Kaise karna hai:
+
+  Option A: Specific plan execute karna:
+  claude skill execute-approved-task plan_security_audit_critical_2026-02-16
+
+  Option B: Next plan execute karna (FIFO):
+  claude skill execute-approved-task
+
+  Kya hota hai:
+  1. Skill approved plan ko read karti hai
+  2. Action type identify karti hai (Email, LinkedIn Post, Report, etc.)
+  3. Real action perform karti hai:
+    - Email: Gmail MCP se email send karta hai
+    - LinkedIn Post: LinkedIn par post karta hai
+    - Report: Document generate karta hai
+  4. Execution log create hoti hai
+  5. Plan ko 4_Approved/ se Done/ mein move kar deta hai
+  6. Execution metadata add ho jata hai
+  7. Dashboard update ho jata hai
+
+  Example:
+  4_Approved/plan_security_audit_critical_2026-02-16.md
+  → Done/plan_security_audit_critical_2026-02-16_executed_20260216_143000.md
+
+  ---
+  📋 Complete Workflow Summary
+
+  ┌─────────┐
+  │  Inbox  │ ← Emails, LinkedIn, Manual files aate hain
+  └────┬────┘
+       │ (Watcher - Automatic)
+       ↓
+  ┌──────────────┐
+  │ Needs_Action │ ← Unprocessed tasks
+  └──────┬───────┘
+         │ (process-needs-action skill - Manual)
+         ↓
+  ┌─────────┐
+  │  Plans  │ ← Detailed execution plans
+  └────┬────┘
+       │ (request-approval skill - Manual)
+       ↓
+  ┌─────────────┐
+  │ 4_Approved  │ ← Human-approved plans
+  └──────┬──────┘
+         │ (execute-approved-task skill - Manual)
+         ↓
+  ┌──────────┐
+  │   Done   │ ← Completed tasks
+  └──────────┘
+
+  ---
+  🎯 Aapka Current Status
+
+  Abhi aap yahan hain:
+  - ✅ Step 1 Complete: Files Needs_Action mein hain
+  - ✅ Step 2 Complete: Maine 7 plans create kar diye hain Plans folder mein
+  - ⏳ Step 3 Pending: Aapko plans approve karne hain
+  - ⏳ Step 4 Pending: Approved plans execute karne hain
+
+  ---
+  🚀 Next Steps - Aapko Kya Karna Hai
+
+  Abhi Karna Hai:
+
+  1. Plans Review Karo:
+  ls Plans/
+  Ye 7 plans available hain:
+  - plan_security_audit_critical_2026-02-16.md
+  - plan_client_invoice_2026-02-16.md
+  - plan_gmail_client_inquiry_2026-02-16.md
+  - plan_quarterly_report_2026-02-16.md
+  - plan_partnership_email_2026-02-16.md
+  - plan_team_standup_schedule_2026-02-16.md
+  - plan_crm_update_2026-02-16.md
+  - plan_linkedin_post_ai_trends_2026-02-16.md
+
+  2. Koi Ek Plan Approve Karo (Example):
+  claude skill request-approval Approve plan_security_audit_critical_2026-02-16
+
+  3. Approved Plan Execute Karo:
+  claude skill execute-approved-task plan_security_audit_critical_2026-02-16
+
+  ---
+  💡 Pro Tips
+
+  Tip 1: Priority ke hisaab se approve karo
+  - Pehle CRITICAL tasks (security audit)
+  - Phir URGENT tasks (client invoice)
+  - Phir HIGH priority tasks
+
+  Tip 2: Batch approval
+  Agar multiple plans approve karne hain:
+  claude skill request-approval Approve plan_1, plan_2, plan_3
+
+  Tip 3: Dry run testing
+  Pehli baar execute karne se pehle test karo:
+  claude skill execute-approved-task --dry-run
+
+  ---
+  Kya aap chahte hain ke main abhi koi specific plan approve karoon aur execute karoon? Ya pehle aap plans review karna chahte hain?        
