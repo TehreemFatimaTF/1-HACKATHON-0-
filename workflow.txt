@@ -138,7 +138,7 @@
   3. Approved Plan Execute Karo:
   claude skill execute-approved-task plan_security_audit_critical_2026-02-16
 
-  ---
+
   💡 Pro Tips
 
   Tip 1: Priority ke hisaab se approve karo
@@ -154,21 +154,7 @@
   Pehli baar execute karne se pehle test karo:
   claude skill execute-approved-task --dry-run
 
-  ---
-  Kya aap chahte hain ke main abhi koi specific plan approve karoon aur execute karoon? Ya pehle aap plans review karna chahte hain?        
-
- 1 . mere pas run linkedin automation ki file he woh khudi post kr deti he tumhe kuch nahi krna bas run krna ho ochestrator ke thouru to ye     
-  post wala kam aesse ho jae ga
-  2 .  gmail or linked in post trand wlaa kam whatcher detect kr ke need_action me lae ga the phir resoning wla kam claude kre ga skills ke      
-  thoru  The Brain: Claude Code acts as the reasoning engine. We add the Ralph Wiggum Stop  
-  hook to let the agent continuously iterate until the assigned task is complete
-
-  3 . claude code need_action folder se files  ko read kre ga than plan banay ga plan folder me rakh de ga  
-  phir sare plan utha kr pandding_approval folder me move krdega  
-   
-  4 . phir  human ki bari he  human panding_aproval folder se move kre ga manual approved folder me
-  5 .phir orchestrator aproved folder dekhe ga or scripts run kare ga aek he send_email_reponses wali jo sent kre gi email or 2 he
-  run_linkedin_automation.py ye linked in post kre gi jab sent or post sucsessful ho jae gi tabi hi done me move hogi file wrna nahi 
+  
 
 
 
