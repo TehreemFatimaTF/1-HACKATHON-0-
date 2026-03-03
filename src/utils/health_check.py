@@ -40,7 +40,7 @@ class HealthChecker:
 
     def check_environment_variables(self) -> bool:
         """Verify all required environment variables are set"""
-        print("🔍 Checking environment variables...")
+        print("Checking environment variables...")
 
         required_vars = {
             "ODOO_URL": "Odoo server URL",
@@ -246,7 +246,7 @@ class HealthChecker:
     def run_all_checks(self) -> bool:
         """Run all health checks and return overall status"""
         print("=" * 60)
-        print("🏥 Gold Tier System Health Check")
+        print("Gold Tier System Health Check")
         print("=" * 60)
 
         checks = [
@@ -263,20 +263,20 @@ class HealthChecker:
 
         # Print summary
         print("\n" + "=" * 60)
-        print("📊 Health Check Summary")
+        print("Health Check Summary")
         print("=" * 60)
 
         if self.critical_failures == 0:
-            print(f"✅ All critical checks passed!")
+            print(f"[OK] All critical checks passed!")
             if self.warnings > 0:
-                print(f"⚠️  {self.warnings} warning(s) - optional features not configured")
-            print("\n🚀 System is ready for autonomous operations!")
+                print(f"[WARN] {self.warnings} warning(s) - optional features not configured")
+            print("\n[READY] System is ready for autonomous operations!")
             return True
         else:
-            print(f"❌ {self.critical_failures} critical failure(s) detected")
+            print(f"[FAIL] {self.critical_failures} critical failure(s) detected")
             if self.warnings > 0:
-                print(f"⚠️  {self.warnings} warning(s)")
-            print("\n🛑 System is NOT ready. Please fix critical issues before starting.")
+                print(f"[WARN] {self.warnings} warning(s)")
+            print("\n[NOT READY] System is NOT ready. Please fix critical issues before starting.")
             return False
 
 
