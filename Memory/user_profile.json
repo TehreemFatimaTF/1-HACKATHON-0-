@@ -1,0 +1,31 @@
+{
+  "user_preferences": {
+    "communication_style": "direct",
+    "priority_handling": "urgent_first",
+    "response_format": "structured",
+    "working_hours": "9AM-6PM",
+    "decision_making_style": "thorough"
+  },
+  "projects": {
+    "active": {}
+  },
+  "clients": {
+    "relationship_history": {}
+  },
+  "personalization": {
+    "familiar_terms": [],
+    "preferred_approach": "business focused",
+    "common_tasks": [],
+    "avoidances": []
+  },
+  "context_history": {
+    "last_interaction": "",
+    "current_topics": [],
+    "pending_items": []
+  },
+  "memory_metadata": {
+    "created_at": "2026-02-20",
+    "last_updated": "2026-02-20",
+    "version": "1.0"
+  }
+}

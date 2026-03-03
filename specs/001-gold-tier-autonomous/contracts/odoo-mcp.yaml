@@ -1,0 +1,380 @@
+openapi: 3.0.0
+info:
+  title: Odoo MCP Server
+  description: JSON-RPC interface for Odoo 19+ accounting operations
+  version: 1.0.0
+servers:
+  - url: http://localhost:8069
+    description: Local Odoo server
+
+paths:
+  /odoo/invoice/create:
+    post:
+      summary: Create invoice in Odoo
+      description: Creates a new customer invoice with validation
+      operationId: createInvoice
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - client_reference
+                - line_items
+                - due_date
+              properties:
+                client_reference:
+                  type: string
+                  description: Client name or Odoo partner_id
+                  example: "ABC Corp"
+                invoice_number:
+                  type: string
+                  description: Human-readable invoice number
+                  example: "INV-2026-001"
+                line_items:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - description
+                      - quantity
+                      - unit_price
+                    properties:
+                      description:
+                        type: string
+                        example: "Consulting Services"
+                      quantity:
+                        type: number
+                        example: 10
+                      unit_price:
+                        type: number
+                        example: 150.00
+                      product_id:
+                        type: integer
+                        nullable: true
+                        example: 42
+                tax_rate:
+                  type: number
+                  description: Tax percentage (e.g., 0.10 for 10%)
+                  example: 0.10
+                due_date:
+                  type: string
+                  format: date
+                  example: "2026-03-15"
+                currency:
+                  type: string
+                  default: "USD"
+                  example: "USD"
+      responses:
+        '200':
+          description: Invoice created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  invoice_id:
+                    type: string
+                    description: Internal UUID
+                    example: "550e8400-e29b-41d4-a716-446655440000"
+                  odoo_id:
+                    type: integer
+                    description: Odoo database record ID
+                    example: 1234
+                  total:
+                    type: number
+                    example: 1650.00
+                  audit_flag:
+                    type: boolean
+                    description: True if total >= $500
+                    example: true
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Odoo connection or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /odoo/expenses/list:
+    get:
+      summary: List expenses from Odoo
+      description: Retrieves expenses with optional filtering
+      operationId: listExpenses
+      parameters:
+        - name: start_date
+          in: query
+          schema:
+            type: string
+            format: date
+          example: "2026-01-01"
+        - name: end_date
+          in: query
+          schema:
+            type: string
+            format: date
+          example: "2026-12-31"
+        - name: category
+          in: query
+          schema:
+            type: string
+            enum: [MARKETING, OPERATIONS, TRAVEL, SUPPLIES, SOFTWARE, OTHER]
+          example: "MARKETING"
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 100
+          example: 50
+      responses:
+        '200':
+          description: Expenses retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  expenses:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        expense_id:
+                          type: string
+                          example: "660e8400-e29b-41d4-a716-446655440001"
+                        odoo_id:
+                          type: integer
+                          example: 5678
+                        category:
+                          type: string
+                          example: "MARKETING"
+                        amount:
+                          type: number
+                          example: 250.00
+                        date:
+                          type: string
+                          format: date
+                          example: "2026-02-15"
+                        description:
+                          type: string
+                          example: "LinkedIn Ads Campaign"
+                        vendor:
+                          type: string
+                          example: "LinkedIn"
+                  total_count:
+                    type: integer
+                    example: 42
+        '500':
+          description: Odoo connection or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /odoo/accounting/summary:
+    get:
+      summary: Get accounting summary
+      description: Retrieves financial summary for CEO briefing
+      operationId: getAccountingSummary
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2026-02-01"
+        - name: end_date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+          example: "2026-02-28"
+      responses:
+        '200':
+          description: Summary retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  summary:
+                    type: object
+                    properties:
+                      total_revenue:
+                        type: number
+                        example: 45000.00
+                      total_expenses:
+                        type: number
+                        example: 12000.00
+                      net_income:
+                        type: number
+                        example: 33000.00
+                      outstanding_invoices:
+                        type: integer
+                        example: 5
+                      outstanding_amount:
+                        type: number
+                        example: 8500.00
+                      cash_flow_projection:
+                        type: number
+                        example: 41500.00
+                      expense_breakdown:
+                        type: object
+                        properties:
+                          MARKETING:
+                            type: number
+                            example: 5000.00
+                          OPERATIONS:
+                            type: number
+                            example: 4000.00
+                          SOFTWARE:
+                            type: number
+                            example: 3000.00
+        '500':
+          description: Odoo connection or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /odoo/contacts/sync:
+    post:
+      summary: Sync client/vendor contacts
+      description: Synchronizes contact information with Odoo
+      operationId: syncContacts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contacts
+              properties:
+                contacts:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - type
+                    properties:
+                      name:
+                        type: string
+                        example: "ABC Corp"
+                      type:
+                        type: string
+                        enum: [CLIENT, VENDOR]
+                        example: "CLIENT"
+                      email:
+                        type: string
+                        format: email
+                        example: "contact@abccorp.com"
+                      phone:
+                        type: string
+                        example: "+1-555-0123"
+      responses:
+        '200':
+          description: Contacts synced successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  synced_count:
+                    type: integer
+                    example: 3
+                  failed_count:
+                    type: integer
+                    example: 0
+        '500':
+          description: Odoo connection or server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /odoo/health:
+    get:
+      summary: Health check
+      description: Checks Odoo server connectivity and authentication
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [HEALTHY, DEGRADED, FAILED]
+                    example: "HEALTHY"
+                  authenticated:
+                    type: boolean
+                    example: true
+                  response_time_ms:
+                    type: number
+                    example: 45.2
+        '500':
+          description: Server is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "FAILED"
+                  error:
+                    type: string
+                    example: "Connection refused"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Invalid client reference"
+        error_code:
+          type: string
+          example: "VALIDATION_ERROR"
+        details:
+          type: object
+          additionalProperties: true
+
+  securitySchemes:
+    sessionAuth:
+      type: apiKey
+      in: cookie
+      name: session_id
+      description: Odoo session-based authentication
+
+security:
+  - sessionAuth: []

@@ -1,6 +1,7 @@
 import time
 import os
 import pickle
+import ssl
 from datetime import datetime
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -10,7 +11,8 @@ import base64
 
 # Configuration
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-INBOX_DIR = os.path.join(BASE_DIR, "Inbox")
+INBOX_DIR = os.path.join(BASE_DIR, "Inbox")  # Keep for backward compatibility
+NEEDS_ACTION_DIR = os.path.join(BASE_DIR, "Needs_Action")
 LOGS_DIR = os.path.join(BASE_DIR, "Logs")
 TOKEN_FILE = os.path.join(BASE_DIR, "token.pickle")
 CREDENTIALS_FILE = os.path.join(BASE_DIR, "credentials.json")
@@ -22,7 +24,7 @@ SCOPES = [
 ]
 
 # Ensure directories exist
-for directory in [INBOX_DIR, LOGS_DIR]:
+for directory in [INBOX_DIR, NEEDS_ACTION_DIR, LOGS_DIR]:  # Added NEEDS_ACTION_DIR
     if not os.path.exists(directory):
         os.makedirs(directory)
 
@@ -50,37 +52,64 @@ class GmailWatcher:
 
         # Load existing token
         if os.path.exists(TOKEN_FILE):
-            with open(TOKEN_FILE, 'rb') as token:
-                creds = pickle.load(token)
+            try:
+                with open(TOKEN_FILE, 'rb') as token:
+                    creds = pickle.load(token)
+            except Exception as e:
+                self.log(f"Error loading token: {e}. Will re-authenticate.", "WARNING")
+                creds = None
 
         # If no valid credentials
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 self.log("Refreshing expired token...")
-                creds.refresh(Request())
-            else:
+                try:
+                    # Refresh using standard Request object
+                    creds.refresh(Request())
+                except Exception as e:
+                    self.log(f"Token refresh failed: {e}. Re-authenticating...", "WARNING")
+                    # Delete corrupted token and force re-auth
+                    if os.path.exists(TOKEN_FILE):
+                        os.remove(TOKEN_FILE)
+                    creds = None
+
+            if not creds:
                 if not os.path.exists(CREDENTIALS_FILE):
                     self.log("credentials.json not found", "ERROR")
+                    self.log("Please follow the instructions in GMAIL_AUTH_SETUP.md to set up Gmail authentication", "ERROR")
+                    self.log("You need to create a Google Cloud project and download credentials.json", "ERROR")
                     return False
 
                 self.log("Starting OAuth flow...")
 
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    CREDENTIALS_FILE,
-                    SCOPES
-                )
+                try:
+                    flow = InstalledAppFlow.from_client_secrets_file(
+                        CREDENTIALS_FILE,
+                        SCOPES
+                    )
 
-                # 🔥 FIXED LINE (IMPORTANT)
-                creds = flow.run_local_server(port=8080)
+                    # Run local server with error handling
+                    creds = flow.run_local_server(port=8080, prompt='consent')
+                except Exception as e:
+                    self.log(f"OAuth flow failed: {e}", "ERROR")
+                    return False
 
             # Save token
-            with open(TOKEN_FILE, 'wb') as token:
-                pickle.dump(creds, token)
+            try:
+                with open(TOKEN_FILE, 'wb') as token:
+                    pickle.dump(creds, token)
+                self.log("Authentication successful - token saved")
+            except Exception as e:
+                self.log(f"Warning: Could not save token: {e}", "WARNING")
 
-            self.log("Authentication successful")
-
-        self.service = build('gmail', 'v1', credentials=creds)
-        return True
+        try:
+            # Build service with credentials only (http is mutually exclusive)
+            self.service = build('gmail', 'v1', credentials=creds)
+            self.log("Gmail API service initialized")
+            return True
+        except Exception as e:
+            self.log(f"Failed to build Gmail service: {e}", "ERROR")
+            return False
 
     def get_email_body(self, message):
         try:
@@ -104,7 +133,7 @@ class GmailWatcher:
         timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
         clean_subject = "".join(c for c in subject[:30] if c.isalnum() or c in " -_")
         filename = f"Gmail_{timestamp}_{clean_subject}.md"
-        filepath = os.path.join(INBOX_DIR, filename)
+        filepath = os.path.join(NEEDS_ACTION_DIR, filename)
 
         metadata = f"""---
 Source: Gmail
@@ -176,6 +205,12 @@ Tags: #email
             if new_count > 0:
                 self.log(f"Processed {new_count} new emails")
 
+        except ssl.SSLError as e:
+            self.log(f"SSL Error: {e}. Attempting to re-authenticate...", "ERROR")
+            # Try to re-authenticate on SSL errors
+            if os.path.exists(TOKEN_FILE):
+                os.remove(TOKEN_FILE)
+            self.authenticate()
         except Exception as e:
             self.log(f"Error fetching emails: {e}", "ERROR")
 

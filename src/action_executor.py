@@ -4,6 +4,27 @@ import shutil
 from datetime import datetime
 from pathlib import Path
 
+# Add the LinkedIn poster import (optional)
+import sys
+sys.path.append(str(Path(__file__).parent))
+try:
+    from linkedin_poster import LinkedInPoster
+    LINKEDIN_AVAILABLE = True
+except ImportError:
+    LINKEDIN_AVAILABLE = False
+    print("[WARNING] LinkedInPoster not available - LinkedIn features disabled")
+    LinkedInPoster = None
+
+# Import Gold Tier autonomous engine
+try:
+    from engine_gold import RalphWiggumLoopEngine
+    from models.autonomous_task import AutonomousTask, Priority
+    from models.step import StepSchema, StepStatus
+    GOLD_TIER_AVAILABLE = True
+except ImportError:
+    GOLD_TIER_AVAILABLE = False
+    print("[WARNING] Gold Tier engine not available - running in Silver Tier mode")
+
 # Configuration
 BASE_DIR = Path(__file__).parent.parent
 APPROVED_DIR = BASE_DIR / "4_Approved"
@@ -11,12 +32,31 @@ DONE_DIR = BASE_DIR / "Done"
 LOGS_DIR = BASE_DIR / "Logs"
 ACTIONS_LOG = LOGS_DIR / "external_actions.json"
 
+# Gold Tier Configuration
+AUTONOMOUS_MODE_ENABLED = False  # Set to True to enable autonomous execution
+
 class ActionExecutor:
     """Executes approved plans using MCP tools and external APIs"""
 
     def __init__(self):
         self.log_file = LOGS_DIR / "action_executor.log"
         self.actions_data = self.load_actions_log()
+        if LINKEDIN_AVAILABLE and LinkedInPoster:
+            self.linkedin_poster = LinkedInPoster()  # Initialize LinkedIn poster
+        else:
+            self.linkedin_poster = None
+
+        # Initialize Gold Tier engine if enabled
+        self.gold_tier_engine = None
+        self.autonomous_mode = AUTONOMOUS_MODE_ENABLED
+
+        if self.autonomous_mode and GOLD_TIER_AVAILABLE:
+            try:
+                self.gold_tier_engine = RalphWiggumLoopEngine()
+                self.log("Gold Tier autonomous engine initialized", "SYSTEM")
+            except Exception as e:
+                self.log(f"Failed to initialize Gold Tier engine: {e}", "ERROR")
+                self.autonomous_mode = False
 
     def log(self, message, level="INFO"):
         """Log messages to file and console"""
@@ -190,19 +230,49 @@ class ActionExecutor:
         return True
 
     def execute_linkedin_post(self, action, plan_file):
-        """Execute LinkedIn post action - simulated"""
+        """Execute LinkedIn post action - try MCP first, then direct API"""
         self.log(f"LinkedIn post action detected")
         self.log(f"Content preview: {action['content'][:50]}...")
 
-        # Simulate LinkedIn post
-        post_record = {
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "plan_file": plan_file,
-            "content": action["content"],
-            "hashtags": action["hashtags"],
-            "status": "simulated",
-            "message": "LinkedIn API not configured - simulated"
-        }
+        # Try to use MCP if available (this would be handled by Claude's built-in tools)
+        # For now, let's try direct API posting first
+        try:
+            success = self.linkedin_poster.post_update(action["content"], action["hashtags"])
+            if success:
+                self.log(f"LinkedIn post successful via direct API", "SUCCESS")
+
+                # Log the successful post
+                post_record = {
+                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "plan_file": plan_file,
+                    "content": action["content"],
+                    "hashtags": action["hashtags"],
+                    "status": "posted",
+                    "message": "Successfully posted to LinkedIn via direct API"
+                }
+            else:
+                # If direct API fails, log as simulated
+                post_record = {
+                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                    "plan_file": plan_file,
+                    "content": action["content"],
+                    "hashtags": action["hashtags"],
+                    "status": "pending_manual",
+                    "message": "LinkedIn API not configured - create manually or set up credentials"
+                }
+                self.log(f"LinkedIn post requires manual setup - see instructions", "WARNING")
+
+        except Exception as e:
+            self.log(f"Error in LinkedIn posting: {e}", "ERROR")
+            # Fallback to simulated logging
+            post_record = {
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "plan_file": plan_file,
+                "content": action["content"],
+                "hashtags": action["hashtags"],
+                "status": "pending_manual",
+                "message": f"Error occurred: {str(e)}. Set up LinkedIn credentials to post automatically."
+            }
 
         self.actions_data["linkedin_posts"].append(post_record)
         self.actions_data["total_posts"] += 1
@@ -215,9 +285,15 @@ class ActionExecutor:
             f.write(f"Plan: {plan_file}\n")
             f.write(f"Content:\n{action['content']}\n")
             f.write(f"Hashtags: {' '.join(action['hashtags'])}\n")
+            f.write(f"Status: {post_record['status']}\n")
+            f.write(f"Message: {post_record['message']}\n")
             f.write(f"{'='*60}\n")
 
-        self.log(f"LinkedIn post simulated and logged", "SUCCESS")
+        if "posted" in post_record["status"]:
+            self.log(f"LinkedIn post successfully published", "SUCCESS")
+        else:
+            self.log(f"LinkedIn post pending manual setup", "INFO")
+
         return True
 
     def move_to_done(self, filepath):

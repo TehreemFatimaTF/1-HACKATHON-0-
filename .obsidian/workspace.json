@@ -4,33 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "5edfe40be779d656",
+        "id": "1e73012b77c43a11",
         "type": "tabs",
         "children": [
           {
-            "id": "63a971a047eba0e3",
+            "id": "4ccab5ae25966f82",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
-            }
-          },
-          {
-            "id": "a9db0ad580b7c9e3",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.11.7"
-              },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.11.7"
+              "icon": "lucide-file",
+              "title": "New tab"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -43,19 +30,6 @@
         "id": "4523cb5bcf06d87d",
         "type": "tabs",
         "children": [
-          {
-            "id": "ce78f9835bbe2bb4",
-            "type": "leaf",
-            "state": {
-              "type": "file-explorer",
-              "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
-              },
-              "icon": "lucide-folder-closed",
-              "title": "Files"
-            }
-          },
           {
             "id": "24bae222328b32af",
             "type": "leaf",
@@ -82,8 +56,22 @@
               "icon": "lucide-bookmark",
               "title": "Bookmarks"
             }
+          },
+          {
+            "id": "ab76960366abb23f",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "horizontal",
@@ -189,43 +177,44 @@
       "bases:Create new base": false
     }
   },
-  "active": "a9db0ad580b7c9e3",
+  "active": "4ccab5ae25966f82",
   "lastOpenFiles": [
-    "Needs_Action/task_2026-02-14_161113_LinkedIn_2026-02-14_161111_AI Automation Trends 2026.md",
-    "Inbox/LinkedIn_2026-02-14_161111_AI Automation Trends 2026.md",
-    "Needs_Action/task_2026-02-14_160602_LinkedIn_2026-02-14_160602_AI Automation Trends 2026.md",
-    "Inbox/LinkedIn_2026-02-14_160602_AI Automation Trends 2026.md",
-    "Needs_Action/task_2026-02-14_155649_LinkedIn_2026-02-14_155649_AI Automation Trends 2026.md",
-    "Inbox/LinkedIn_2026-02-14_155649_AI Automation Trends 2026.md",
-    "HACKATHON_CHECKLIST.md",
-    "GMAIL_OAUTH_FIX.md",
-    "QUICK_REFERENCE.md",
-    "Needs_Action/task_2026-02-14_153215_LinkedIn_2026-02-14_153214_AI Automation Trends 2026.md",
-    "DEMO_SCRIPT.md",
-    "demo_start.bat",
-    "Needs_Action/task_2026-02-14_153000_LinkedIn_2026-02-14_152959_AI Automation Trends 2026.md",
-    "Inbox/LinkedIn_2026-02-14_152959_AI Automation Trends 2026.md",
-    "SILVER_TIER_VERIFICATION_REPORT.md",
-    "Needs_Action/task_2026-02-14_152151_LinkedIn_2026-02-14_152150_AI Automation Trends 2026.md",
-    "Inbox/test_email_manual.md",
-    "Needs_Action/task_2026-02-14_151231_LinkedIn_2026-02-14_151230_AI Automation Trends 2026.md",
-    "Inbox/LinkedIn_2026-02-14_151230_AI Automation Trends 2026.md",
-    "src/Logs/watcher_gmail.log",
-    "src/Logs",
-    "src/Inbox",
-    "credentials.json",
-    "GMAIL_MCP_SETUP.md",
-    "Needs_Action/task_2026-02-14_145758_LinkedIn_2026-02-14_145758_AI Automation Trends 2026.md",
-    "Inbox/LinkedIn_2026-02-14_145758_AI Automation Trends 2026.md",
-    "Logs/watcher_linkedin.log",
-    "Logs/watcher_gmail.log",
-    "Logs/watcher_local.log",
-    "Logs/watcher_main.log",
-    "Inbox/demo.md",
-    "src/__pycache__/watcher_linkedin.cpython-312.pyc",
+    "DOCUMENTATION_INDEX.md",
+    "Done/plan_task_2026-02-24_145652_LinkedIn_2026-02-24_145652_AI Automation Trends 2026_processed_2026-02-25_135500_20260226_075410_executed_20260226_165311.md",
+    "4_Approved/plan_Gmail_2026-02-25_130906_Urgent Project Discussion Req_processed_2026-02-25_135500_20260226_075410.md",
+    "Done/plan_task_2026-02-25_130900_LinkedIn_2026-02-25_130859_AI Automation Trends 2026.md_2026-02-25_executed_20260226_165311.md",
+    "Done/plan_Gmail_2026-02-24_160752_Urgent Project Discussion Req.md_2026-02-25_executed_20260226_074645.md",
     "Dashboard.md",
-    "Company_Handbook.md",
-    "plan_crm_update_2026-01-19.md",
-    "Done/plan_urgent_invoice_followup_2026-01-19.md"
+    "Pending_Approval/plan_2026-02-27_linkedin_ai_automation_trends.md",
+    "Plans/plan_2026-02-27_linkedin_remote_work_best_practices.md",
+    "Needs_Action/task_2026-02-24_145652_LinkedIn_2026-02-24_145652_AI Automation Trends 2026_processed_2026-02-25_135500.md",
+    "Plans/plan_2026-02-27_urgent_response_tehreem_fatima.md",
+    "Plans/plan_2026-02-27_security_alerts_review.md",
+    "Plans/plan_2026-02-27_linkedin_ai_automation_trends.md",
+    "Pending_Approval/plan_2026-02-27_security_alerts_review.md",
+    "Pending_Approval/plan_2026-02-27_linkedin_remote_work_best_practices.md",
+    "Pending_Approval/plan_2026-02-27_urgent_response_tehreem_fatima.md",
+    "Needs_Action/Gmail_2026-02-27_014248_Urgent Project Discussion Req.md",
+    "Needs_Action/Gmail_2026-02-27_014247_Security alert.md",
+    "Needs_Action/Gmail_2026-02-27_014246_Tehreem your password was suc.md",
+    "Needs_Action/Gmail_2026-02-27_014241_New device registration for Re.md",
+    "token.pickle",
+    "after_clicking_start_post.png",
+    "Pending_Approval/plan_2026-02-25_135500_task_2026-02-24_145652_LinkedIn_2026-02-24_145652_AI Automation Trends 2026.md",
+    "Pending_Approval/plan_2026-02-25_135500_task_2026-02-25_130900_LinkedIn_2026-02-25_130859_AI Automation Trends 2026.md",
+    "Approved/plan_2026-02-25_135500_Gmail_2026-02-24_160752_Urgent Project Discussion Req.md",
+    "Pending_Approval/plan_2026-02-25_135500_Gmail_2026-02-25_130906_Urgent Project Discussion Req.md",
+    "Pending_Approval/plan_2026-02-25_135500_Gmail_2026-02-24_160752_Urgent Project Discussion Req.md",
+    "Needs_Action/task_2026-02-23_165217_LinkedIn_2026-02-23_165217_Sales Automation Success Stori.md",
+    "Inbox/LinkedIn_2026-02-23_165217_Sales Automation Success Stori.md",
+    "save_linkedin_content.py",
+    "direct_linkedin_post.py",
+    "temp_linkedin_post.py",
+    "linkedin_post_ready.txt",
+    "Logs/Audit_Trail/gold_audit_2026-02-23.jsonl",
+    "test_post_linkedin.py",
+    "src/mcp/linkedin/Logs/Audit_Trail",
+    "src/mcp/linkedin/Logs",
+    "post_linkedin.py"
   ]
 }

@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: Facebook MCP Server
+  description: Facebook Graph API interface for posting and engagement tracking
+  version: 1.0.0
+servers:
+  - url: https://graph.facebook.com/v18.0
+    description: Facebook Graph API v18.0
+
+paths:
+  /facebook/post/create:
+    post:
+      summary: Create Facebook post
+      description: Posts content to Facebook page
+      operationId: createFacebookPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - page_id
+              properties:
+                content:
+                  type: string
+                  description: Post text (no character limit)
+                  example: "Excited to announce our new AI automation features! Check out our latest blog post for details."
+                page_id:
+                  type: string
+                  description: Facebook Page ID
+                  example: "123456789012345"
+                media_urls:
+                  type: array
+                  items:
+                    type: string
+                    format: uri
+                  example: ["https://example.com/image1.jpg"]
+                link:
+                  type: string
+                  format: uri
+                  nullable: true
+                  description: Link to attach to post
+                  example: "https://example.com/blog/ai-automation"
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post_id:
+                    type: string
+                    description: Internal UUID
+                    example: "880e8400-e29b-41d4-a716-446655440003"
+                  facebook_id:
+                    type: string
+                    description: Facebook post ID
+                    example: "123456789012345_987654321098765"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://facebook.com/123456789012345/posts/987654321098765"
+                  published_at:
+                    type: string
+                    format: date-time
+                    example: "2026-02-20T10:30:00Z"
+        '400':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded (200 calls per hour)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Rate limit exceeded"
+                  retry_after:
+                    type: integer
+                    description: Seconds until rate limit resets
+                    example: 1800
+        '500':
+          description: Facebook API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /facebook/engagement/metrics:
+    get:
+      summary: Get post engagement metrics
+      description: Retrieves insights for a specific Facebook post
+      operationId: getFacebookMetrics
+      parameters:
+        - name: facebook_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "123456789012345_987654321098765"
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  metrics:
+                    type: object
+                    properties:
+                      likes:
+                        type: integer
+                        example: 156
+                      comments:
+                        type: integer
+                        example: 23
+                      shares:
+                        type: integer
+                        example: 42
+                      reach:
+                        type: integer
+                        description: Total people reached
+                        example: 3500
+                      engagement_rate:
+                        type: number
+                        example: 0.063
+                      collected_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-20T12:00:00Z"
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Facebook API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /facebook/health:
+    get:
+      summary: Health check
+      description: Checks Facebook API connectivity and token validity
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [HEALTHY, DEGRADED, FAILED]
+                    example: "HEALTHY"
+                  authenticated:
+                    type: boolean
+                    example: true
+                  token_expires_at:
+                    type: string
+                    format: date-time
+                    example: "2026-08-20T00:00:00Z"
+                  rate_limit:
+                    type: object
+                    properties:
+                      limit:
+                        type: integer
+                        example: 200
+                      remaining:
+                        type: integer
+                        example: 185
+                      reset_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-20T11:00:00Z"
+        '500':
+          description: API is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "FAILED"
+                  error:
+                    type: string
+                    example: "Invalid access token"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Invalid page ID"
+        error_code:
+          type: string
+          example: "INVALID_PAGE_ID"
+
+  securitySchemes:
+    pageAccessToken:
+      type: apiKey
+      in: query
+      name: access_token
+      description: Long-lived Page Access Token
+
+security:
+  - pageAccessToken: []

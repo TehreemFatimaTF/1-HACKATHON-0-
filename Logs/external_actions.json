@@ -26,6 +26,105 @@
       "body": "This is the final test to verify that email actions are correctly identified and processed.\nThe system should:\n1. Identify this as an EMAIL action (not LinkedIn)\n2. Extract recipient: test-final@example.com\n3. Extract subject: Final Test - Email Action Detection\n4. Extract this complete body content\n5. Log it for MCP execution with status \"pending_mcp\"\n6. Move to Done/ folder\nIf this works correctly, the action executor is ready for Gmail MCP integration.\nBest regards,\nAI Employee System",
       "status": "pending_mcp",
       "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_233520_Gmail_2026-03-01_233520_Urgent Project Discussion Req.md",
+      "recipient": "TEHREEM FATIMA <tf797855@gmail.com>",
+      "subject": " Re: Urgent: Project Discussion Required",
+      "body": "Thank you for your email regarding \"Urgent: Project Discussion Required\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_233520_task_2026-03-01_202148_LinkedIn_2026-03-01_202147_AI Automation Trends 2026.md",
+      "recipient": "Unknown",
+      "subject": " Re: Unknown",
+      "body": "Thank you for your email regarding \"Unknown\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_233520_task_2026-03-01_232752_LinkedIn_2026-03-01_232752_AI Automation Trends 2026.md",
+      "recipient": "Unknown",
+      "subject": " Re: Unknown",
+      "body": "Thank you for your email regarding \"Unknown\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235244_Gmail_2026-03-01_234213_Security alert_processed_2026-03-01_234213_processed_2026-03-01_234735_processed_2026-03-01_234836.md",
+      "recipient": "Google <no-reply@accounts.google.com>",
+      "subject": " Re: Security alert",
+      "body": "Thank you for your email regarding \"Security alert\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235244_Gmail_2026-03-01_234213_Urgent Project Discussion Req_processed_2026-03-01_234214_processed_2026-03-01_234735_processed_2026-03-01_234836.md",
+      "recipient": "TEHREEM FATIMA <tf797855@gmail.com>",
+      "subject": " Re: Urgent: Project Discussion Required",
+      "body": "Thank you for your email regarding \"Urgent: Project Discussion Required\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235244_task_2026-03-01_234212_LinkedIn_2026-03-01_234211_AI Automation Trends 2026_processed_2026-03-01_234214_processed_2026-03-01_234735_processed_2026-03-01_234836.md",
+      "recipient": "Unknown",
+      "subject": " Re: Unknown",
+      "body": "Thank you for your email regarding \"Unknown\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235244_task_2026-03-01_234733_LinkedIn_2026-03-01_234732_AI Automation Trends 2026_processed_2026-03-01_234735_processed_2026-03-01_234836.md",
+      "recipient": "Unknown",
+      "subject": " Re: Unknown",
+      "body": "Thank you for your email regarding \"Unknown\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235540_Gmail_2026-03-01_234213_Security alert_processed_2026-03-01_234213_processed_2026-03-01_234735_processed_2026-03-01_234836_processed_2026-03-01_235244.md",
+      "recipient": "Google <no-reply@accounts.google.com>",
+      "subject": " Re: Security alert",
+      "body": "Thank you for your email regarding \"Security alert\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235540_Gmail_2026-03-01_234213_Urgent Project Discussion Req_processed_2026-03-01_234214_processed_2026-03-01_234735_processed_2026-03-01_234836_processed_2026-03-01_235244.md",
+      "recipient": "TEHREEM FATIMA <tf797855@gmail.com>",
+      "subject": " Re: Urgent: Project Discussion Required",
+      "body": "Thank you for your email regarding \"Urgent: Project Discussion Required\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235540_task_2026-03-01_234212_LinkedIn_2026-03-01_234211_AI Automation Trends 2026_processed_2026-03-01_234214_processed_2026-03-01_234735_processed_2026-03-01_234836_processed_2026-03-01_235244.md",
+      "recipient": "Unknown",
+      "subject": " Re: Unknown",
+      "body": "Thank you for your email regarding \"Unknown\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
+    },
+    {
+      "timestamp": "2026-03-02 00:01:12",
+      "plan_file": "plan_2026-03-01_235540_task_2026-03-01_234733_LinkedIn_2026-03-01_234732_AI Automation Trends 2026_processed_2026-03-01_234735_processed_2026-03-01_234836_processed_2026-03-01_235244.md",
+      "recipient": "Unknown",
+      "subject": " Re: Unknown",
+      "body": "Thank you for your email regarding \"Unknown\". We have reviewed your request and will get back to you shortly with a detailed response.\nBest regards,\nAI Employee",
+      "status": "pending_mcp",
+      "message": "Requires Claude Code MCP execution"
     }
   ],
   "linkedin_posts": [
@@ -69,15 +168,121 @@
       "hashtags": [],
       "status": "simulated",
       "message": "LinkedIn API not configured - simulated"
+    },
+    {
+      "timestamp": "2026-02-26 16:53:11",
+      "plan_file": "plan_task_2026-02-24_145652_LinkedIn_2026-02-24_145652_AI Automation Trends 2026_processed_2026-02-25_135500_20260226_074644.md",
+      "content": "",
+      "hashtags": [
+        "#AI",
+        "#Automation",
+        "#FutureOfWork"
+      ],
+      "status": "pending_manual",
+      "message": "Error occurred: 'NoneType' object has no attribute 'post_update'. Set up LinkedIn credentials to post automatically."
+    },
+    {
+      "timestamp": "2026-02-26 16:53:11",
+      "plan_file": "plan_task_2026-02-24_145652_LinkedIn_2026-02-24_145652_AI Automation Trends 2026_processed_2026-02-25_135500_20260226_075410.md",
+      "content": "",
+      "hashtags": [
+        "#AI",
+        "#Automation",
+        "#FutureOfWork"
+      ],
+      "status": "pending_manual",
+      "message": "Error occurred: 'NoneType' object has no attribute 'post_update'. Set up LinkedIn credentials to post automatically."
+    },
+    {
+      "timestamp": "2026-02-26 16:53:11",
+      "plan_file": "plan_task_2026-02-25_130900_LinkedIn_2026-02-25_130859_AI Automation Trends 2026.md_2026-02-25.md",
+      "content": "",
+      "hashtags": [
+        "#AI",
+        "#Automation",
+        "#FutureOfWork"
+      ],
+      "status": "pending_manual",
+      "message": "Error occurred: 'NoneType' object has no attribute 'post_update'. Set up LinkedIn credentials to post automatically."
+    },
+    {
+      "timestamp": "2026-02-26 16:53:11",
+      "plan_file": "plan_task_2026-02-25_130900_LinkedIn_2026-02-25_130859_AI Automation Trends 2026_processed_2026-02-25_135500_20260226_074644.md",
+      "content": "",
+      "hashtags": [
+        "#AI",
+        "#Automation",
+        "#FutureOfWork"
+      ],
+      "status": "pending_manual",
+      "message": "Error occurred: 'NoneType' object has no attribute 'post_update'. Set up LinkedIn credentials to post automatically."
+    },
+    {
+      "timestamp": "2026-02-26 16:53:11",
+      "plan_file": "plan_task_2026-02-25_130900_LinkedIn_2026-02-25_130859_AI Automation Trends 2026_processed_2026-02-25_135500_20260226_075410.md",
+      "content": "",
+      "hashtags": [
+        "#AI",
+        "#Automation",
+        "#FutureOfWork"
+      ],
+      "status": "pending_manual",
+      "message": "Error occurred: 'NoneType' object has no attribute 'post_update'. Set up LinkedIn credentials to post automatically."
+    },
+    {
+      "timestamp": "2026-03-02 15:03:04",
+      "content": "\ud83e\udd16 AI Automation is Transforming Business Operations\nBusinesses are increasingly adopting AI employees for routine tasks, and the numbers speak for themselves:\n\ud83d\udcca Market size expected to reach $50B by 2",
+      "status": "logged_for_manual_posting",
+      "file": "linkedin_draft_ai_automation_trends_2026-03-02_020600.md"
     }
   ],
   "reports_generated": [],
   "meetings_scheduled": [],
-  "total_emails": 3,
-  "total_posts": 4,
+  "email_drafts": [
+    {
+      "timestamp": "2026-03-02 02:06:00",
+      "plan_file": "plan_2026-03-02_Gmail_Good_News.md",
+      "recipient": "TEHREEM FATIMA <tf797855@gmail.com>",
+      "subject": "Re: good news \ud83d\ude0d",
+      "status": "draft_created",
+      "draft_location": "Done/email_draft_ramadan_update_2026-03-02_020600.md",
+      "message": "Gmail MCP not configured - manual sending required"
+    },
+    {
+      "timestamp": "2026-03-02 02:06:00",
+      "plan_file": "plan_2026-03-02_Gmail_Iftar_Invitation.md",
+      "recipient": "TEHREEM FATIMA <tf797855@gmail.com>",
+      "subject": "Re: kheriat malum krni he",
+      "status": "draft_created",
+      "priority": "TIME_SENSITIVE",
+      "draft_location": "Done/email_draft_iftar_invitation_2026-03-02_020600.md",
+      "message": "Gmail MCP not configured - manual sending required - RESPOND TODAY"
+    }
+  ],
+  "linkedin_drafts": [
+    {
+      "timestamp": "2026-03-02 02:06:00",
+      "plan_file": "plan_2026-03-02_LinkedIn_AI_Automation_Trends.md",
+      "content": "AI Automation Trends 2026 - $50B market opportunity",
+      "hashtags": [
+        "#AI",
+        "#Automation",
+        "#FutureOfWork",
+        "#BusinessInnovation",
+        "#DigitalTransformation",
+        "#AIEmployees"
+      ],
+      "status": "draft_created",
+      "draft_location": "Done/linkedin_draft_ai_automation_trends_2026-03-02_020600.md",
+      "message": "LinkedIn MCP not configured - manual posting required"
+    }
+  ],
+  "total_emails": 14,
+  "total_posts": 10,
+  "total_drafts_created": 3,
   "total_reports": 0,
   "total_meetings": 0,
-  "last_updated": "2026-02-13 23:41:02",
+  "last_updated": "2026-03-02 02:06:00",
   "daily_stats": {
     "2026-02-11": {
       "emails": 0,

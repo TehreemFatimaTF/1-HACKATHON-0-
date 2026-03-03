@@ -1,0 +1,23 @@
+# Gold Tier Dependencies
+# Updated with available versions
+odoorpc==0.10.1  # Latest available (0.10.0 not found)
+tweepy==4.14.0
+facebook-sdk==3.1.0
+instagrapi==2.2.1  # Latest available (4.0.0 not found)
+textblob==0.17.1
+tenacity==8.2.3
+
+# Existing Silver Tier dependencies
+watchdog
+# LinkedIn Automation Dependencies
+playwright==1.40.0
+python-dotenv==1.0.0
+requests
+python-dotenv
+anthropic
+
+# Gmail API Dependencies
+google-api-python-client==2.70.0
+google-auth==2.16.0
+google-auth-oauthlib==0.8.0
+google-auth-httplib2==0.1.0

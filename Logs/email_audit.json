@@ -1,0 +1,62 @@
+{
+  "emails_sent": [
+    {
+      "timestamp": "2026-03-02 14:43:08",
+      "file": "sent_20260302_010059_plan_2026-03-02_005901_test_email_20260302_executed_20260302_010307.md",
+      "recipient": "test@example.com",
+      "subject": "Re: Test Email",
+      "body_preview": "## Suggested Response Plan:\n### Action: Send Email Response\n**Recipient:** test@example.com\n**Subjec...",
+      "status": "sent"
+    },
+    {
+      "timestamp": "2026-03-02 14:48:59",
+      "file": "email_draft_ramadan_update_2026-03-02_020600.md",
+      "recipient": "<tf797855@gmail.com>",
+      "subject": "Re: good news 😍",
+      "body_preview": "",
+      "status": "sent"
+    },
+    {
+      "timestamp": "2026-03-02 14:49:00",
+      "file": "plan_2026-03-02_Gmail_Good_News_executed_2026-03-02_020600.md",
+      "recipient": "<tf797855@gmail.com>",
+      "subject": " good news 😍",
+      "body_preview": "",
+      "status": "sent"
+    },
+    {
+      "timestamp": "2026-03-02 14:49:00",
+      "file": "plan_2026-03-02_Gmail_Iftar_Invitation_executed_2026-03-02_020600.md",
+      "recipient": "<tf797855@gmail.com>",
+      "subject": " kheriat malum krni he",
+      "body_preview": "",
+      "status": "sent"
+    },
+    {
+      "timestamp": "2026-03-02 14:49:34",
+      "file": "team_meeting_reminder.md",
+      "recipient": "team@company.com",
+      "subject": "Weekly Team Meeting Reminder",
+      "body_preview": "Hi Team,\nThis is a friendly reminder about our weekly team meeting scheduled for tomorrow.\n**Meeting...",
+      "status": "sent"
+    },
+    {
+      "timestamp": "2026-03-02 14:49:34",
+      "file": "test_project_update.md",
+      "recipient": "test.client@example.com",
+      "subject": "Project Status Update - March 2026",
+      "body_preview": "Dear Client,\nI hope this email finds you well.\nI wanted to provide you with a quick update on our on...",
+      "status": "sent"
+    },
+    {
+      "timestamp": "2026-03-02 14:51:23",
+      "file": "email_draft_ramadan_update_2026-03-02_020600_sent_20260302_144859.md",
+      "recipient": "<tf797855@gmail.com>",
+      "subject": "Re: good news 😍",
+      "body_preview": "",
+      "status": "sent"
+    }
+  ],
+  "total_count": 7,
+  "last_updated": "2026-03-02 14:51:23"
+}

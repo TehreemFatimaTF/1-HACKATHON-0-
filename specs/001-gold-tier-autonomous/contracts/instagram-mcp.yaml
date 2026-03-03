@@ -1,0 +1,253 @@
+openapi: 3.0.0
+info:
+  title: Instagram MCP Server
+  description: Instagram Graph API interface for posting and engagement tracking
+  version: 1.0.0
+servers:
+  - url: https://graph.instagram.com/v18.0
+    description: Instagram Graph API v18.0
+
+paths:
+  /instagram/post/create:
+    post:
+      summary: Create Instagram post
+      description: Posts image with caption to Instagram Business Account
+      operationId: createInstagramPost
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+                - image_url
+                - instagram_account_id
+              properties:
+                content:
+                  type: string
+                  maxLength: 2200
+                  description: Post caption (max 2200 characters)
+                  example: "Excited to announce our new AI automation features! 🚀✨ #AI #Automation #TechInnovation"
+                image_url:
+                  type: string
+                  format: uri
+                  description: Publicly accessible image URL (required for Instagram)
+                  example: "https://example.com/image1.jpg"
+                instagram_account_id:
+                  type: string
+                  description: Instagram Business Account ID
+                  example: "17841400123456789"
+                hashtags:
+                  type: array
+                  maxItems: 30
+                  items:
+                    type: string
+                  example: ["AI", "Automation", "TechInnovation"]
+                location_id:
+                  type: string
+                  nullable: true
+                  description: Instagram location ID
+                  example: "123456789"
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post_id:
+                    type: string
+                    description: Internal UUID
+                    example: "990e8400-e29b-41d4-a716-446655440004"
+                  instagram_id:
+                    type: string
+                    description: Instagram media ID
+                    example: "17895695668004550"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://instagram.com/p/ABC123xyz/"
+                  published_at:
+                    type: string
+                    format: date-time
+                    example: "2026-02-20T10:30:00Z"
+        '400':
+          description: Validation error (caption too long, invalid image, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded (25 posts per day, 200 calls per hour)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Daily post limit exceeded (25 posts per day)"
+                  retry_after:
+                    type: integer
+                    description: Seconds until limit resets
+                    example: 43200
+        '500':
+          description: Instagram API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /instagram/engagement/metrics:
+    get:
+      summary: Get post engagement metrics
+      description: Retrieves insights for a specific Instagram post
+      operationId: getInstagramMetrics
+      parameters:
+        - name: instagram_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "17895695668004550"
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  metrics:
+                    type: object
+                    properties:
+                      likes:
+                        type: integer
+                        example: 234
+                      comments:
+                        type: integer
+                        example: 45
+                      shares:
+                        type: integer
+                        description: Shares via DM
+                        example: 12
+                      reach:
+                        type: integer
+                        description: Unique accounts reached
+                        example: 5600
+                      impressions:
+                        type: integer
+                        description: Total views
+                        example: 7800
+                      engagement_rate:
+                        type: number
+                        example: 0.052
+                      collected_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-20T12:00:00Z"
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Instagram API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /instagram/health:
+    get:
+      summary: Health check
+      description: Checks Instagram API connectivity and token validity
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [HEALTHY, DEGRADED, FAILED]
+                    example: "HEALTHY"
+                  authenticated:
+                    type: boolean
+                    example: true
+                  token_expires_at:
+                    type: string
+                    format: date-time
+                    example: "2026-08-20T00:00:00Z"
+                  rate_limit:
+                    type: object
+                    properties:
+                      daily_posts_limit:
+                        type: integer
+                        example: 25
+                      daily_posts_remaining:
+                        type: integer
+                        example: 22
+                      hourly_calls_limit:
+                        type: integer
+                        example: 200
+                      hourly_calls_remaining:
+                        type: integer
+                        example: 178
+                      reset_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-20T11:00:00Z"
+        '500':
+          description: API is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "FAILED"
+                  error:
+                    type: string
+                    example: "Invalid access token"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Caption exceeds 2200 characters"
+        error_code:
+          type: string
+          example: "CAPTION_TOO_LONG"
+
+  securitySchemes:
+    accessToken:
+      type: apiKey
+      in: query
+      name: access_token
+      description: Instagram Business Account Access Token (via Facebook)
+
+security:
+  - accessToken: []

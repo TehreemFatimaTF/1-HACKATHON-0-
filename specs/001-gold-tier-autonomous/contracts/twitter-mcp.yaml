@@ -1,0 +1,227 @@
+openapi: 3.0.0
+info:
+  title: Twitter (X) MCP Server
+  description: X API v2 interface for posting and engagement tracking
+  version: 1.0.0
+servers:
+  - url: https://api.twitter.com/2
+    description: Twitter API v2
+
+paths:
+  /twitter/post/create:
+    post:
+      summary: Create tweet
+      description: Posts a tweet with optional media
+      operationId: createTweet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                  maxLength: 280
+                  description: Tweet text (280 chars for free tier, 4000 for premium)
+                  example: "Excited to announce our new AI automation features! 🚀 #AI #Automation"
+                media_urls:
+                  type: array
+                  maxItems: 4
+                  items:
+                    type: string
+                    format: uri
+                  example: ["https://example.com/image1.jpg"]
+                reply_to:
+                  type: string
+                  nullable: true
+                  description: Tweet ID to reply to
+                  example: "1234567890123456789"
+      responses:
+        '201':
+          description: Tweet created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  post_id:
+                    type: string
+                    description: Internal UUID
+                    example: "770e8400-e29b-41d4-a716-446655440002"
+                  twitter_id:
+                    type: string
+                    description: Twitter tweet ID
+                    example: "1234567890123456789"
+                  url:
+                    type: string
+                    format: uri
+                    example: "https://twitter.com/user/status/1234567890123456789"
+                  published_at:
+                    type: string
+                    format: date-time
+                    example: "2026-02-20T10:30:00Z"
+        '400':
+          description: Validation error (content too long, invalid media, etc.)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  error:
+                    type: string
+                    example: "Rate limit exceeded"
+                  retry_after:
+                    type: integer
+                    description: Seconds until rate limit resets
+                    example: 900
+        '500':
+          description: Twitter API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /twitter/engagement/metrics:
+    get:
+      summary: Get tweet engagement metrics
+      description: Retrieves analytics for a specific tweet
+      operationId: getTweetMetrics
+      parameters:
+        - name: twitter_id
+          in: query
+          required: true
+          schema:
+            type: string
+          example: "1234567890123456789"
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  metrics:
+                    type: object
+                    properties:
+                      likes:
+                        type: integer
+                        example: 42
+                      retweets:
+                        type: integer
+                        example: 15
+                      replies:
+                        type: integer
+                        example: 8
+                      impressions:
+                        type: integer
+                        example: 1250
+                      engagement_rate:
+                        type: number
+                        example: 0.052
+                      collected_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-20T12:00:00Z"
+        '404':
+          description: Tweet not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Twitter API error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /twitter/health:
+    get:
+      summary: Health check
+      description: Checks Twitter API connectivity and rate limits
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [HEALTHY, DEGRADED, FAILED]
+                    example: "HEALTHY"
+                  authenticated:
+                    type: boolean
+                    example: true
+                  rate_limit:
+                    type: object
+                    properties:
+                      limit:
+                        type: integer
+                        example: 50
+                      remaining:
+                        type: integer
+                        example: 45
+                      reset_at:
+                        type: string
+                        format: date-time
+                        example: "2026-02-20T11:00:00Z"
+        '500':
+          description: API is unhealthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "FAILED"
+                  error:
+                    type: string
+                    example: "Authentication failed"
+
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          example: "Content exceeds 280 characters"
+        error_code:
+          type: string
+          example: "CONTENT_TOO_LONG"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: OAuth2
+      description: OAuth 2.0 Bearer Token
+
+security:
+  - bearerAuth: []
