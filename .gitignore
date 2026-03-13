@@ -41,6 +41,10 @@ Logs/*.log
 Logs/watcher.log
 Logs/executions.log
 Logs/approvals.log
+Logs/Audit_Trail/
+Logs/*.jsonl
+Logs/health_status.json
+Logs/alerts.log
 
 # Temporary files
 *.tmp

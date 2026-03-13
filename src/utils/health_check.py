@@ -61,33 +61,33 @@ class HealthChecker:
         for var, description in required_vars.items():
             value = os.getenv(var)
             if not value or value.startswith("your_"):
-                print(f"   ❌ Missing: {var} ({description})")
+                print(f"   [FAIL] Missing: {var} ({description})")
                 self.results.append((var, False, f"Required variable not set"))
                 self.critical_failures += 1
                 all_present = False
             else:
-                print(f"   ✅ {var}: Configured")
+                print(f"   [OK] {var}: Configured")
                 self.results.append((var, True, "OK"))
 
         # Check optional variables (warnings only)
         for var, description in optional_vars.items():
             value = os.getenv(var)
             if not value or value.startswith("your_"):
-                print(f"   ⚠️  Optional: {var} ({description}) - Not configured")
+                print(f"   [WARN] Optional: {var} ({description}) - Not configured")
                 self.warnings += 1
             else:
-                print(f"   ✅ {var}: Configured")
+                print(f"   [OK] {var}: Configured")
 
         return all_present
 
     def check_odoo_connection(self) -> bool:
         """Test Odoo server connectivity"""
-        print("\n🔍 Checking Odoo connection...")
+        print("\nChecking Odoo connection...")
 
         try:
             client = OdooClient(
-                url=os.getenv("ODOO_URL", "http://localhost:8069"),
-                db=os.getenv("ODOO_DB", "odoo"),
+                endpoint_url=os.getenv("ODOO_URL", "http://localhost:8069"),
+                database=os.getenv("ODOO_DB", "odoo"),
                 username=os.getenv("ODOO_USERNAME", "admin"),
                 password=os.getenv("ODOO_PASSWORD", "admin")
             )
@@ -95,31 +95,31 @@ class HealthChecker:
             health = client.health_check()
 
             if health["status"] == "healthy":
-                print(f"   ✅ Odoo connection successful")
+                print(f"   [OK] Odoo connection successful")
                 print(f"      Server: {health.get('server', 'N/A')}")
                 print(f"      Database: {health.get('database', 'N/A')}")
                 self.results.append(("Odoo", True, "Connected"))
                 return True
             else:
                 error = health.get("error", "Unknown error")
-                print(f"   ❌ Odoo connection failed: {error}")
+                print(f"   [FAIL] Odoo connection failed: {error}")
                 self.results.append(("Odoo", False, error))
                 self.critical_failures += 1
                 return False
 
         except Exception as e:
-            print(f"   ❌ Odoo connection error: {e}")
+            print(f"   [FAIL] Odoo connection error: {e}")
             self.results.append(("Odoo", False, str(e)))
             self.critical_failures += 1
             return False
 
     def check_twitter_connection(self) -> bool:
         """Test Twitter/X API connectivity"""
-        print("\n🔍 Checking Twitter/X connection...")
+        print("\nChecking Twitter/X connection...")
 
         api_key = os.getenv("TWITTER_API_KEY")
         if not api_key or api_key.startswith("your_"):
-            print("   ⚠️  Twitter credentials not configured (optional)")
+            print("   [WARN] Twitter credentials not configured (optional)")
             self.warnings += 1
             return True  # Not critical
 
@@ -134,22 +134,22 @@ class HealthChecker:
             health = client.health_check()
 
             if health["status"] == "healthy":
-                print(f"   ✅ Twitter connection successful")
+                print(f"   [OK] Twitter connection successful")
                 self.results.append(("Twitter", True, "Connected"))
                 return True
             else:
-                print(f"   ⚠️  Twitter connection failed: {health.get('error')}")
+                print(f"   [WARN] Twitter connection failed: {health.get('error')}")
                 self.warnings += 1
                 return True  # Not critical
 
         except Exception as e:
-            print(f"   ⚠️  Twitter connection error: {e}")
+            print(f"   [WARN] Twitter connection error: {e}")
             self.warnings += 1
             return True  # Not critical
 
     def check_directory_structure(self) -> bool:
         """Verify all required directories exist"""
-        print("\n🔍 Checking directory structure...")
+        print("\nChecking directory structure...")
 
         required_dirs = [
             "Inbox",
@@ -173,9 +173,9 @@ class HealthChecker:
         for dir_path in required_dirs:
             full_path = project_root / dir_path
             if full_path.exists():
-                print(f"   ✅ {dir_path}")
+                print(f"   [OK] {dir_path}")
             else:
-                print(f"   ❌ Missing: {dir_path}")
+                print(f"   [FAIL] Missing: {dir_path}")
                 self.results.append((f"Dir: {dir_path}", False, "Directory not found"))
                 self.critical_failures += 1
                 all_exist = False
@@ -184,12 +184,12 @@ class HealthChecker:
 
     def check_audit_log_integrity(self) -> bool:
         """Verify audit log files are accessible and valid"""
-        print("\n🔍 Checking audit log integrity...")
+        print("\nChecking audit log integrity...")
 
         audit_dir = project_root / "Logs" / "Audit_Trail"
 
         if not audit_dir.exists():
-            print("   ❌ Audit directory not found")
+            print("   [FAIL] Audit directory not found")
             self.critical_failures += 1
             return False
 
@@ -197,11 +197,11 @@ class HealthChecker:
         audit_files = list(audit_dir.glob("gold_audit_*.jsonl"))
 
         if not audit_files:
-            print("   ⚠️  No audit logs found (expected for new installation)")
+            print("   [WARN] No audit logs found (expected for new installation)")
             self.warnings += 1
             return True
 
-        print(f"   ✅ Found {len(audit_files)} audit log file(s)")
+        print(f"   [OK] Found {len(audit_files)} audit log file(s)")
 
         # Verify latest log is readable
         latest_log = max(audit_files, key=lambda p: p.stat().st_mtime)
@@ -211,12 +211,12 @@ class HealthChecker:
                 if lines:
                     # Verify JSON format
                     json.loads(lines[-1])
-                    print(f"   ✅ Latest audit log is valid ({len(lines)} entries)")
+                    print(f"   [OK] Latest audit log is valid ({len(lines)} entries)")
                 else:
-                    print("   ⚠️  Latest audit log is empty")
+                    print("   [WARN] Latest audit log is empty")
                     self.warnings += 1
         except Exception as e:
-            print(f"   ❌ Audit log validation failed: {e}")
+            print(f"   [FAIL] Audit log validation failed: {e}")
             self.critical_failures += 1
             return False
 
@@ -224,22 +224,22 @@ class HealthChecker:
 
     def check_mcp_connection_tracker(self) -> bool:
         """Verify MCP connection tracker file exists"""
-        print("\n🔍 Checking MCP connection tracker...")
+        print("\nChecking MCP connection tracker...")
 
         tracker_file = project_root / "Memory" / "mcp_connections.json"
 
         if not tracker_file.exists():
-            print("   ⚠️  MCP connection tracker not found (will be created on first run)")
+            print("   [WARN] MCP connection tracker not found (will be created on first run)")
             self.warnings += 1
             return True
 
         try:
             with open(tracker_file, 'r') as f:
                 data = json.load(f)
-                print(f"   ✅ MCP tracker valid ({len(data)} connections tracked)")
+                print(f"   [OK] MCP tracker valid ({len(data)} connections tracked)")
                 return True
         except Exception as e:
-            print(f"   ❌ MCP tracker validation failed: {e}")
+            print(f"   [FAIL] MCP tracker validation failed: {e}")
             self.critical_failures += 1
             return False
 

@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+*.log
+
+# Git
+.git/
+.gitignore
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Test files
+tests/
+*.test.py
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Large files
+*.pdf
+*.png
+*.jpg
+*.jpeg

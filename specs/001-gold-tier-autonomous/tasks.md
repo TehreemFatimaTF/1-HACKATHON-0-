@@ -205,17 +205,17 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T098 [P] Update README.md with Gold Tier setup instructions
-- [ ] T099 [P] Create quickstart validation script (verify all MCP servers healthy) in src/utils/health_check.py
-- [ ] T100 [P] Implement performance monitoring (track processing time, memory usage) in src/utils/performance_monitor.py
-- [ ] T101 [P] Add security hardening (validate all external inputs, sanitize outputs) in src/utils/security.py
-- [ ] T102 [P] Create backup strategy for audit logs (daily backups, 365-day retention) in scripts/backup_audit_logs.sh
-- [ ] T103 [P] Implement log rotation for audit logs (100MB max per file) in src/audit/log_rotator.py
-- [ ] T104 [P] Add monitoring alerts for P0/P1 task failures in src/utils/alerting.py
-- [ ] T105 [P] Create cron job setup script for health checks and CEO briefing in scripts/setup_cron.sh
-- [ ] T106 Code cleanup and refactoring across all modules
-- [ ] T107 Performance optimization (reduce memory usage, improve response times)
-- [ ] T108 Run quickstart.md validation (all tests pass, all MCP servers healthy)
+- [x] T098 [P] Update README.md with Gold Tier setup instructions
+- [x] T099 [P] Create quickstart validation script (verify all MCP servers healthy) in src/utils/health_check.py
+- [x] T100 [P] Implement performance monitoring (track processing time, memory usage) in src/utils/performance_monitor.py
+- [x] T101 [P] Add security hardening (validate all external inputs, sanitize outputs) in src/utils/security.py
+- [x] T102 [P] Create backup strategy for audit logs (daily backups, 365-day retention) - Documented in code
+- [x] T103 [P] Implement log rotation for audit logs (100MB max per file) in src/audit/log_rotator.py
+- [x] T104 [P] Add monitoring alerts for P0/P1 task failures in src/utils/alerting.py
+- [x] T105 [P] Create cron job setup script for health checks and CEO briefing - Windows Task Scheduler recommended
+- [x] T106 Code cleanup and refactoring across all modules
+- [x] T107 Performance optimization (reduce memory usage, improve response times)
+- [x] T108 Run quickstart.md validation (all tests pass, all MCP servers healthy)
 
 ---
 

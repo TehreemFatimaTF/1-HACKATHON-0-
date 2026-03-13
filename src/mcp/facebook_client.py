@@ -23,6 +23,7 @@ import requests
 from src.mcp.base_mcp import BaseMCPClient
 from src.utils.retry import retry_with_backoff
 from src.audit.gold_logger import GoldAuditLogger
+from src.audit.audit_schema import ActionType, ExecutionResult, ErrorDetails
 
 
 class FacebookAuthenticationError(Exception):
@@ -97,30 +98,31 @@ class FacebookClient(BaseMCPClient):
 
             # Log successful verification
             self.audit_logger.log_action(
-                action_type="MCP_CALL",
+                action_type=ActionType.MCP_CALL,
                 action_name="facebook_verify_token",
                 parameters={},
                 decision_rationale="Verifying Facebook access token",
-                execution_result="SUCCESS",
+                execution_result=ExecutionResult.SUCCESS,
                 result_data={},
                 business_impact="Facebook connection established",
             )
 
         except Exception as e:
             self.audit_logger.log_action(
-                action_type="ERROR",
+                action_type=ActionType.ERROR,
                 action_name="facebook_verify_failed",
                 parameters={},
                 decision_rationale="Facebook token verification failed",
-                execution_result="FAILURE",
+                execution_result=ExecutionResult.FAILURE,
                 result_data={},
                 business_impact="Facebook connection unavailable",
-                error_details={
-                    "error_type": type(e).__name__,
-                    "error_message": str(e),
-                    "recovery_attempted": False,
-                    "recovery_result": "N/A",
-                },
+                error_details=ErrorDetails(
+                    error_type=type(e).__name__,
+                    error_message=str(e),
+                    stack_trace="",
+                    recovery_attempted=False,
+                    recovery_result="N/A",
+                ),
             )
             raise FacebookAuthenticationError(f"Token verification failed: {e}")
 
@@ -188,11 +190,11 @@ class FacebookClient(BaseMCPClient):
 
             # Log success
             self.audit_logger.log_action(
-                action_type="MCP_CALL",
+                action_type=ActionType.MCP_CALL,
                 action_name="facebook_post",
                 parameters={"content_length": len(content)},
                 decision_rationale="Posting to Facebook page",
-                execution_result="SUCCESS",
+                execution_result=ExecutionResult.SUCCESS,
                 result_data={"post_id": result["id"]},
                 business_impact=f"Facebook post published: {content[:50]}...",
             )
@@ -207,19 +209,20 @@ class FacebookClient(BaseMCPClient):
         except requests.exceptions.HTTPError as e:
             # Log error
             self.audit_logger.log_action(
-                action_type="ERROR",
+                action_type=ActionType.ERROR,
                 action_name="facebook_post_failed",
                 parameters={"content_length": len(content)},
                 decision_rationale="Facebook post failed",
-                execution_result="FAILURE",
+                execution_result=ExecutionResult.FAILURE,
                 result_data={},
                 business_impact="Facebook post not published",
-                error_details={
-                    "error_type": type(e).__name__,
-                    "error_message": str(e),
-                    "recovery_attempted": False,
-                    "recovery_result": "N/A",
-                },
+                error_details=ErrorDetails(
+                    error_type=type(e).__name__,
+                    error_message=str(e),
+                    stack_trace="",
+                    recovery_attempted=False,
+                    recovery_result="N/A",
+                ),
             )
 
             return {
@@ -277,11 +280,11 @@ class FacebookClient(BaseMCPClient):
 
             # Log success
             self.audit_logger.log_action(
-                action_type="MCP_CALL",
+                action_type=ActionType.MCP_CALL,
                 action_name="facebook_get_metrics",
                 parameters={"post_id": post_id},
                 decision_rationale="Fetching Facebook post metrics",
-                execution_result="SUCCESS",
+                execution_result=ExecutionResult.SUCCESS,
                 result_data={"likes": likes, "comments": comments, "shares": shares},
                 business_impact=f"Retrieved metrics: {engagements} engagements, {impressions} impressions",
             )
@@ -299,19 +302,20 @@ class FacebookClient(BaseMCPClient):
         except requests.exceptions.HTTPError as e:
             # Log error
             self.audit_logger.log_action(
-                action_type="ERROR",
+                action_type=ActionType.ERROR,
                 action_name="facebook_get_metrics_failed",
                 parameters={"post_id": post_id},
                 decision_rationale="Metrics fetch failed",
-                execution_result="FAILURE",
+                execution_result=ExecutionResult.FAILURE,
                 result_data={},
                 business_impact="Metrics unavailable",
-                error_details={
-                    "error_type": type(e).__name__,
-                    "error_message": str(e),
-                    "recovery_attempted": False,
-                    "recovery_result": "N/A",
-                },
+                error_details=ErrorDetails(
+                    error_type=type(e).__name__,
+                    error_message=str(e),
+                    stack_trace="",
+                    recovery_attempted=False,
+                    recovery_result="N/A",
+                ),
             )
 
             return {
@@ -348,6 +352,27 @@ class FacebookClient(BaseMCPClient):
                 "error": str(e),
                 "authenticated": False,
             }
+
+    def _make_request(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Make actual API request to Facebook (required by BaseMCPClient)
+
+        Args:
+            endpoint: API endpoint (e.g., "post/create", "metrics/get")
+            data: Request data
+
+        Returns:
+            Response data
+        """
+        if endpoint == "post/create":
+            return self.post_to_page(
+                content=data["content"],
+                media_urls=data.get("media_urls"),
+            )
+        elif endpoint == "metrics/get":
+            return self.get_post_metrics(post_id=data["post_id"])
+        else:
+            raise ValueError(f"Unknown endpoint: {endpoint}")
 
     def call(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
         """

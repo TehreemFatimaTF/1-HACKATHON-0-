@@ -9,6 +9,7 @@ from watcher_local import LocalFileWatcher
 from watcher_gmail import GmailWatcher
 from watcher_linkedin import LinkedInWatcher
 from watcher_whatsapp import WhatsAppWatcher
+from watcher_facebook import FacebookWatcher
 
 # Import Gold Tier autonomous engine
 try:
@@ -26,7 +27,8 @@ SOURCES_CONFIG = {
     "local_files": True,      # Always enabled
     "gmail": True,            # Gmail API enabled
     "linkedin": True,         # Simulated for demo
-    "whatsapp": True          # WhatsApp Web monitoring via Playwright
+    "whatsapp": True,         # WhatsApp Web monitoring via Playwright
+    "facebook": True          # Facebook & Instagram integration
 }
 
 # Gold Tier Autonomous Mode Configuration
@@ -174,6 +176,12 @@ class MultiSourceWatcher:
                 started_count += 1
         else:
             self.log("WhatsApp watcher disabled (set whatsapp=True in config to enable)")
+
+        if SOURCES_CONFIG["facebook"]:
+            if self.start_watcher("Facebook", FacebookWatcher):
+                started_count += 1
+        else:
+            self.log("Facebook watcher disabled (set facebook=True in config to enable)")
 
         # Summary
         print("\n" + "-"*60)

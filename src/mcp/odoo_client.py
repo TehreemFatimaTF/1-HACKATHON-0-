@@ -144,6 +144,8 @@ class OdooClient(BaseMCPClient):
 
         except Exception as e:
             # Log authentication failure
+            from src.audit.audit_schema import ErrorDetails
+
             self.audit_logger.log_action(
                 action_type="ERROR",
                 action_name="odoo_authenticate_failed",
@@ -152,15 +154,32 @@ class OdooClient(BaseMCPClient):
                 execution_result="FAILURE",
                 result_data={},
                 business_impact="Odoo connection unavailable",
-                error_details={
-                    "error_type": type(e).__name__,
-                    "error_message": str(e),
-                    "recovery_attempted": False,
-                    "recovery_result": "N/A",
-                },
+                error_details=ErrorDetails(
+                    error_type=type(e).__name__,
+                    error_message=str(e),
+                    stack_trace="",
+                    recovery_attempted=False,
+                    recovery_result="N/A"
+                ),
             )
 
             raise OdooAuthenticationError(f"Authentication failed: {e}")
+
+    def _make_request(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Make actual API request to Odoo server (implements BaseMCPClient abstract method)
+
+        Args:
+            endpoint: API endpoint path
+            data: Request payload
+
+        Returns:
+            Response data
+
+        Raises:
+            OdooConnectionError: If connection fails
+        """
+        return self._json_rpc_call(endpoint, data)
 
     def _json_rpc_call(self, endpoint: str, params: Dict[str, Any]) -> Dict[str, Any]:
         """

@@ -1,0 +1,20 @@
+{
+  "generated_at": "2026-03-08T01:22:47.242324",
+  "total_posts": 1,
+  "successful_posts": 1,
+  "failed_posts": 0,
+  "by_platform": {
+    "facebook": 1,
+    "instagram": 0
+  },
+  "recent_posts": [
+    {
+      "platform": "facebook",
+      "content": "AI Automation Success Story\n\nJust helped a client save 20 hours per week with AI automation!\n\nSmall ",
+      "post_id": "994025210463202_122100731757213341",
+      "timestamp": "2026-03-08T01:22:47.242324",
+      "status": "success"
+    }
+  ],
+  "success_rate": "100.0%"
+}
